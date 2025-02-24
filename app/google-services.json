@@ -1,0 +1,87 @@
+{
+  "project_info": {
+    "project_number": "905461231215",
+    "firebase_url": "https://booking-5b540-default-rtdb.firebaseio.com",
+    "project_id": "booking-5b540",
+    "storage_bucket": "booking-5b540.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905461231215:android:fced844c03c544c255e79a",
+        "android_client_info": {
+          "package_name": "com.example.booking2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA343ruCGiYY-lu4fZ53KXwDkd1POrenik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905461231215:android:ec97a90ca50f8a2a55e79a",
+        "android_client_info": {
+          "package_name": "com.example.booking3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA343ruCGiYY-lu4fZ53KXwDkd1POrenik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905461231215:android:f009aa9a5ce5920555e79a",
+        "android_client_info": {
+          "package_name": "com.example.booking4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA343ruCGiYY-lu4fZ53KXwDkd1POrenik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905461231215:android:a1fcbfb43a012bd655e79a",
+        "android_client_info": {
+          "package_name": "com.example.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA343ruCGiYY-lu4fZ53KXwDkd1POrenik"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
