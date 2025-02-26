@@ -1,25 +1,29 @@
-package com.example.booking4.Activity;
+package com.example.booking4;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.example.booking4.Activity.MainActivity;
 import com.example.booking4.Adapter.FilmListAdapter;
 import com.example.booking4.Adapter.SliderAdapter;
 import com.example.booking4.Models.Film;
 import com.example.booking4.Models.SliderItems;
 import com.example.booking4.databinding.ActivityMainBinding;
+import com.example.booking4.databinding.FragmentTestBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,33 +33,34 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
+
+public class testFragment extends Fragment {
+    private FragmentTestBinding binding;
     private FirebaseDatabase database;
     private final Handler sliderHandler = new Handler();
     private final Runnable sliderRunnable = () -> binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+
+        binding = FragmentTestBinding.inflate(inflater, container, false);
         database = FirebaseDatabase.getInstance();
-
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        );
 
         initTopMoving();
         initBanner();
         initUpComming();
+
+        return binding.getRoot();
+
     }
-
-
-
     private void initTopMoving() {
         DatabaseReference myRef = database.getReference("Items");
 
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     if (!items.isEmpty()) {
                         binding.recyclerViewTopMovies.setLayoutManager(
                                 new LinearLayoutManager(
-                                        MainActivity.this,
+                                        getContext(),
                                         LinearLayoutManager.HORIZONTAL,
                                         false
                                 )
@@ -95,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void initUpComming() {
         DatabaseReference myRef = database.getReference("Upcomming");
 
@@ -114,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (!items.isEmpty()) {
                         binding.recyclerViewUpcomming.setLayoutManager(
-                                new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false)
+                                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false)
                         );
                         binding.recyclerViewUpcomming.setAdapter(new FilmListAdapter(items));
                     }
@@ -124,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this, "Failed to load data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to load data: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(MainActivity.this, "Failed to load banners: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Failed to load banners: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -179,14 +185,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        sliderHandler.removeCallbacks(sliderRunnable);
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Hủy binding để tránh memory leak
+        binding = null;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sliderHandler.postDelayed(sliderRunnable, 2000);
-    }
 }
