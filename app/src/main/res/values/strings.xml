@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">booking4</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Cinema Ticket Booking</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Summary">Summary</string>
+    <string name="GetStarted">Get Started</string>
+    <string name="CinemaTicketBooking">Cinema Ticket Booking</string>
+    <string name="Explorer">Explorer</string>
+    <string name="Search">Search</string>
+    <string name="Cart">Cart</string>
+    <string name="Profile">Profile</string>
+
 </resources>

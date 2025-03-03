@@ -1,4 +1,4 @@
-package com.example.booking4;
+package com.example.booking4.Fragment;
 
 import android.os.Bundle;
 
@@ -17,12 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.booking4.Activity.MainActivity;
 import com.example.booking4.Adapter.FilmListAdapter;
 import com.example.booking4.Adapter.SliderAdapter;
 import com.example.booking4.Models.Film;
 import com.example.booking4.Models.SliderItems;
-import com.example.booking4.databinding.ActivityMainBinding;
 import com.example.booking4.databinding.FragmentTestBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class testFragment extends Fragment {
+public class ExplorerFragment extends Fragment {
     private FragmentTestBinding binding;
     private FirebaseDatabase database;
     private final Handler sliderHandler = new Handler();

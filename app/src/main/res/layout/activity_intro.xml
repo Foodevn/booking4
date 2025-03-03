@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".Acivity.IntroActivity">
+    tools:context=".Activity.IntroActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -25,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:text="Cinema Ticket Booking"
+                android:text="@string/CinemaTicketBooking"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"
@@ -50,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp"
                 android:background="@drawable/orange_bg"
-                android:text="Get Started"
+                android:text="@string/GetStarted"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"/>

@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Menu.B1ottomMenu">
 
     <item
-        android:id="@+id/explorer"
+        android:id="@+id/item_explorer"
         android:icon="@drawable/btn_1"
-        android:title="Explorer"
+        android:title="@string/Explorer"
         app:cnb_backgroundColor="@color/orange"
         app:cnb_iconColor="@color/white" />
 
     <item
-        android:id="@+id/favorites"
+        android:id="@+id/item_search"
         android:icon="@drawable/search_1"
-        android:title="Search"
+        android:title="@string/Search"
         app:cnb_backgroundColor="@color/orange"
         app:cnb_iconColor="@color/white" />
 
     <item
-        android:id="@+id/cart"
+        android:id="@+id/item_cart"
         android:icon="@drawable/btn_3"
-        android:title="Cart"
+        android:title="@string/Cart"
         app:cnb_backgroundColor="@color/orange"
         app:cnb_iconColor="@color/white" />
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/item_profile"
         android:icon="@drawable/btn_4"
-        android:title="Profile"
+        android:title="@string/Profile"
         app:cnb_backgroundColor="@color/orange"
         app:cnb_iconColor="@color/white" />
 

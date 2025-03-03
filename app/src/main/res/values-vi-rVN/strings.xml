@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Đặt vé xem phim</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Summary">Tóm tắt</string>
+    <string name="GetStarted">Bắt đầu</string>
+    <string name="CinemaTicketBooking">Đặt vé xem phim</string>
+    <string name="Explorer">Khám phá</string>
+    <string name="Search">Tìm kiếm</string>
+    <string name="Cart">Giỏ hàng</string>
+    <string name="Profile">Hồ sơ</string>
+
+
+</resources>
