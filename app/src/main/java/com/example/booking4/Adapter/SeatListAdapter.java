@@ -60,7 +60,7 @@ public class SeatListAdapter extends RecyclerView.Adapter<SeatListAdapter.SeatVi
                 break;
             case UNAVAILABLE:
                 holder.binding.seat.setBackgroundResource(R.drawable.ic_seat_unavailable);
-                holder.binding.seat.setTextColor(context.getColor(R.color.grey));
+                holder.binding.seat.setTextColor(context.getColor(R.color.gray));
                 break;
         }
 

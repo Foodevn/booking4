@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import com.example.booking4.Adapter.FilmListAdapter;
 import com.example.booking4.Adapter.SliderAdapter;
 import com.example.booking4.Models.Film;
-import com.example.booking4.Models.SliderItems;
+import com.example.booking4.Models.SliderItem;
 import com.example.booking4.databinding.FragmentTestBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,8 +36,14 @@ import java.util.List;
 public class ExplorerFragment extends Fragment {
     private FragmentTestBinding binding;
     private FirebaseDatabase database;
-    private final Handler sliderHandler = new Handler();
-    private final Runnable sliderRunnable = () -> binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1);
+    private final Handler sliderHandler = new Handler(Looper.getMainLooper());
+    private final Runnable sliderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1, true);
+            sliderHandler.postDelayed(this, 3000); // Sử dụng handler.postDelayed() thay vì this
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,11 +147,11 @@ public class ExplorerFragment extends Fragment {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                List<SliderItems> lists = new ArrayList<>();
+                List<SliderItem> lists = new ArrayList<>();
                 for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    SliderItems list = childSnapshot.getValue(SliderItems.class);
-                    if (list != null) {
-                        lists.add(list);
+                    SliderItem item = childSnapshot.getValue(SliderItem.class);
+                    if (item != null) {
+                        lists.add(item);
                     }
                 }
                 binding.progressBarSlider.setVisibility(View.GONE);
@@ -157,8 +164,8 @@ public class ExplorerFragment extends Fragment {
             }
         });
     }
-    private void banners(List<SliderItems> lists) {
-        binding.viewPager2.setAdapter(new SliderAdapter(lists, binding.viewPager2));
+    private void banners(List<SliderItem> lists) {
+        binding.viewPager2.setAdapter(new SliderAdapter(lists));
         binding.viewPager2.setClipToPadding(false);
         binding.viewPager2.setClipChildren(false);
         binding.viewPager2.setOffscreenPageLimit(3);
@@ -174,14 +181,50 @@ public class ExplorerFragment extends Fragment {
         binding.viewPager2.setPageTransformer(compositePageTransformer);
         binding.viewPager2.setCurrentItem(1);
 
+        binding.circleIndicator3.createIndicators(lists.size(), 0);
+
         binding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                int realPosition = (position - 1 + lists.size()) % lists.size();
+                binding.circleIndicator3.animatePageSelected(realPosition);
                 sliderHandler.removeCallbacks(sliderRunnable);
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+                if (state == binding.viewPager2.SCROLL_STATE_IDLE) {
+                    int curr = binding.viewPager2.getCurrentItem();
+                    int lastReal = binding.viewPager2.getAdapter().getItemCount() - 2;
+                    if (curr == 0) {
+                        binding.viewPager2.setCurrentItem(lastReal, false);
+                    } else if (curr > lastReal) {
+                        binding.viewPager2.setCurrentItem(1, false);
+                    }
+                }
+
+                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                    // Người dùng đang kéo: dừng auto-scroll
+                    sliderHandler.removeCallbacks(sliderRunnable);
+                } else if (state == ViewPager2.SCROLL_STATE_IDLE) {
+                    // Khi cuộn dừng lại, khởi động lại auto-scroll sau 3000ms
+                    sliderHandler.postDelayed(sliderRunnable, 3000);
+                }
             }
         });
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        sliderHandler.postDelayed(sliderRunnable, 3000); // Bắt đầu tự động chạy ViewPager khi Fragment hiển thị
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        sliderHandler.removeCallbacks(sliderRunnable); // Dừng Runnable khi Fragment không hiển thị
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

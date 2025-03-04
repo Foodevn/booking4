@@ -28,9 +28,10 @@ public class IntroActivity extends AppCompatActivity {
         binding = ActivityIntroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.startBtn.setOnClickListener(view ->
-                startActivity(new Intent(IntroActivity.this, MainActivity.class))
-        );
+        binding.startBtn.setOnClickListener(view -> {
+            startActivity(new Intent(IntroActivity.this, MainActivity.class));
+            finish();
+        });
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
@@ -48,7 +49,8 @@ public class IntroActivity extends AppCompatActivity {
         Configuration config = new Configuration(res.getConfiguration());
         config.setLocale(locale);
         res.updateConfiguration(config, res.getDisplayMetrics());
-        
+
     }
+
 
 }

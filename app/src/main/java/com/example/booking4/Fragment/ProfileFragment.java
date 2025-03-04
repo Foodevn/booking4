@@ -12,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.Locale;
+
+import com.example.booking4.DataBase.SQLite;
+import com.example.booking4.Models.Setting;
 import com.example.booking4.databinding.FragmentProfileBinding;
 
 
@@ -42,31 +40,32 @@ public class ProfileFragment extends Fragment {
     }
 
     private void run() {
-//        binding.btnEnglish.setOnClickListener(view -> {
-//            changeLanguage("en");
-//        });
-//        binding.btnVietNamese.setOnClickListener(view -> {
-//            changeLanguage("vi");
-//        });
+        binding.btnEnglish.setOnClickListener(view -> {
+            changeLanguage("en");
+        });
+        binding.btnVietNamese.setOnClickListener(view -> {
+            changeLanguage("vi");
+        });
 
     }
 
-//    private void changeLanguage(String en) {
-//        Locale locale = new Locale(en);
-//        Locale.setDefault(locale);
-//        Resources res = getResources();
-//        Configuration config = new Configuration(res.getConfiguration());
-//        config.setLocale(locale);
-//        res.updateConfiguration(config, res.getDisplayMetrics());
-//
-//        // Lưu ngôn ngữ vào SharedPreferences
-//        SharedPreferences.Editor editor = requireActivity().getSharedPreferences("Settings", requireActivity().MODE_PRIVATE).edit();
-//        editor.putString("My_Lang", en);
-//        editor.apply();
-//
-//        // Cập nhật lại toàn bộ giao diện
-//        requireActivity().recreate();
-//    }
+    private void changeLanguage(String lang) {
+        SQLite sqLite=new SQLite(getContext());
+        Setting setting=new Setting(lang);
+
+        sqLite.UpdateSetting(setting);
+
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Resources res = getResources();
+        Configuration config = new Configuration(res.getConfiguration());
+        config.setLocale(locale);
+        res.updateConfiguration(config, res.getDisplayMetrics());
+
+        Intent intent = requireActivity().getIntent();
+        requireActivity().finish();
+        startActivity(intent);
+    }
 
     @Override
     public void onDestroyView() {

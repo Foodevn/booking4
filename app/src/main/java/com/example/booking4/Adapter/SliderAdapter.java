@@ -12,30 +12,26 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.booking4.Models.SliderItems;
+import com.example.booking4.Models.SliderItem;
 import com.example.booking4.databinding.ViewholderSliderBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder> {
-    private final List<SliderItems> sliderItems;
-    private final ViewPager2 viewPager2;
+    private final List<SliderItem> sliderItems;
+    private final List<SliderItem> fakesliderItems=new ArrayList<>();
     private Context context;
 
-    public SliderAdapter(List<SliderItems> sliderItems, ViewPager2 viewPager2) {
+    public SliderAdapter(List<SliderItem> sliderItems) {
         this.sliderItems = sliderItems;
-        this.viewPager2 = viewPager2;
+        fakesliderItems.add(sliderItems.get(sliderItems.size() - 1));
+        fakesliderItems.addAll(sliderItems);
+        fakesliderItems.add(sliderItems.get(0));
+
     }
 
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            List<SliderItems> newItems = new ArrayList<>(sliderItems); // Sao chép danh sách gốc
-            sliderItems.addAll(newItems); // Thêm bản sao vào cuối danh sách
-            notifyDataSetChanged();
-        }
-    };
+
 
     public class SliderViewHolder extends RecyclerView.ViewHolder {
         private final ViewholderSliderBinding binding;
@@ -45,7 +41,7 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
             this.binding = binding;
         }
 
-        public void bind(SliderItems sliderItem) {
+        public void bind(SliderItem sliderItem) {
             if (context != null) {
                 Glide.with(context)
                         .load(sliderItem.getImage())
@@ -65,16 +61,18 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 
     @Override
     public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
-        holder.bind(sliderItems.get(position));
+        int virtualPosition = position % sliderItems.size();
+        SliderItem sliderItem = sliderItems.get(virtualPosition);
 
-        if (position == sliderItems.size() - 2) {
-            viewPager2.post(runnable);
-        }
+        Glide.with(context)
+                .load(sliderItem.getImage())
+                .transform(new CenterCrop(), new RoundedCorners(60))
+                .into(holder.binding.imageSlide);
     }
 
     @Override
     public int getItemCount() {
-        return sliderItems.size();
+        return Integer.MAX_VALUE;
     }
 }
 

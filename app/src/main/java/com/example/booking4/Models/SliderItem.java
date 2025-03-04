@@ -1,13 +1,13 @@
 package com.example.booking4.Models;
 
-public class SliderItems {
+public class SliderItem {
     private String Image;
 
-    public SliderItems() {
+    public SliderItem() {
         this.Image = "";
     }
 
-    public SliderItems(String Image) {
+    public SliderItem(String Image) {
         this.Image = Image;
     }
 
