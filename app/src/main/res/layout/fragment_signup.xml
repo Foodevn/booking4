@@ -53,7 +53,21 @@
                 android:textColor="@color/orange"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
+            <!-- Input Name User -->
+            <EditText
+                android:id="@+id/et_signup_name"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/ic_user1"
+                android:hint="User Name"
+                android:drawablePadding="16dp"
+                android:paddingStart="24dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_signup_title" />
             <!-- Input Email -->
             <EditText
                 android:id="@+id/et_signup_email"
@@ -68,7 +82,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_signup_title" />
+                app:layout_constraintTop_toBottomOf="@id/et_signup_name" />
 
             <!-- Input Password -->
             <EditText
@@ -106,7 +120,7 @@
 
             <!-- Input Phone -->
             <EditText
-                android:id="@+id/et_phone"
+                android:id="@+id/et_signup_phone"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="12dp"
@@ -133,7 +147,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_phone" />
+                app:layout_constraintTop_toBottomOf="@id/et_signup_phone" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

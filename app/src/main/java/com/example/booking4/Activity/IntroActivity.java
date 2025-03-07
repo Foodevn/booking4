@@ -5,13 +5,20 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.booking4.DataBase.SQLite;
+import com.example.booking4.GlobalData;
 import com.example.booking4.Models.Setting;
+import com.example.booking4.Models.User;
 import com.example.booking4.databinding.ActivityIntroBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Locale;
 
@@ -24,6 +31,7 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loadLocale();
+        getUserFromFirebase();
 
         binding = ActivityIntroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -36,6 +44,19 @@ public class IntroActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         );
+    }
+
+    private void getUserFromFirebase() {
+        FirebaseUser userCurrent= FirebaseAuth.getInstance().getCurrentUser();
+        if (userCurrent != null) {
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(userCurrent.getUid());
+            usersRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult().exists()) {
+                    User user= task.getResult().getValue(User.class);
+                    GlobalData.userGlobal = user;
+                }
+            });
+        }
     }
 
     private void loadLocale() {
@@ -51,6 +72,7 @@ public class IntroActivity extends AppCompatActivity {
         res.updateConfiguration(config, res.getDisplayMetrics());
 
     }
+
 
 
 }

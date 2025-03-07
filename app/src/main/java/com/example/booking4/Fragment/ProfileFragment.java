@@ -14,12 +14,15 @@ import android.view.ViewGroup;
 
 
 import java.util.Locale;
-
 import com.example.booking4.DataBase.SQLite;
+import com.example.booking4.GlobalData;
 import com.example.booking4.Models.Setting;
+import com.example.booking4.Models.User;
 import com.example.booking4.databinding.FragmentProfileBinding;
-
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class ProfileFragment extends Fragment {
 
@@ -40,18 +43,36 @@ public class ProfileFragment extends Fragment {
     }
 
     private void run() {
-        binding.btnEnglish.setOnClickListener(view -> {
-            changeLanguage("en");
+//        binding.btnEnglish.setOnClickListener(view -> {
+//            changeLanguage("en");
+//        });
+//        binding.btnVietNamese.setOnClickListener(view -> {
+//            changeLanguage("vi");
+//        });
+        getUserFromFirebase();
+        binding.btnSwaplanguage.setOnClickListener(view -> {
+            if (Locale.getDefault().getLanguage().equals("en")) {
+                changeLanguage("vi");
+            } else {
+                changeLanguage("en");
+            }
+                });
+        binding.btnLogout.setOnClickListener(view ->
+        {
+            FirebaseAuth.getInstance().signOut();
+
+            Intent intent = requireActivity().getIntent();
+            requireActivity().finish();
+            startActivity(intent);
         });
-        binding.btnVietNamese.setOnClickListener(view -> {
-            changeLanguage("vi");
-        });
+        binding.evUserEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        binding.evUserName.setText(GlobalData.userGlobal.getName());
 
     }
-
     private void changeLanguage(String lang) {
         SQLite sqLite=new SQLite(getContext());
-        Setting setting=new Setting(lang);
+        Setting setting=sqLite.GetSetting();
+        setting.setLanguages(lang);
 
         sqLite.UpdateSetting(setting);
 
@@ -65,6 +86,18 @@ public class ProfileFragment extends Fragment {
         Intent intent = requireActivity().getIntent();
         requireActivity().finish();
         startActivity(intent);
+    }
+    private void getUserFromFirebase() {
+        FirebaseUser userCurrent= FirebaseAuth.getInstance().getCurrentUser();
+        if (userCurrent != null) {
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(userCurrent.getUid());
+            usersRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult().exists()) {
+                    User user= task.getResult().getValue(User.class);
+                    GlobalData.userGlobal = user;
+                }
+            });
+        }
     }
 
     @Override

@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.example.booking4.Adapter.FilmListAdapter;
 import com.example.booking4.Adapter.SliderAdapter;
+import com.example.booking4.GlobalData;
 import com.example.booking4.Models.Film;
 import com.example.booking4.Models.SliderItem;
-import com.example.booking4.databinding.FragmentTestBinding;
+import com.example.booking4.databinding.FragmentExplorerBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +37,7 @@ import java.util.List;
 
 
 public class ExplorerFragment extends Fragment {
-    private FragmentTestBinding binding;
+    private FragmentExplorerBinding binding;
     private FirebaseDatabase database;
     private final Handler sliderHandler = new Handler(Looper.getMainLooper());
     private final Runnable sliderRunnable = new Runnable() {
@@ -55,10 +58,10 @@ public class ExplorerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-        binding = FragmentTestBinding.inflate(inflater, container, false);
+        binding = FragmentExplorerBinding.inflate(inflater, container, false);
         database = FirebaseDatabase.getInstance();
 
+        displayUser();
         initTopMoving();
         initBanner();
         initUpComming();
@@ -66,11 +69,22 @@ public class ExplorerFragment extends Fragment {
         return binding.getRoot();
 
     }
+
+    private void displayUser() {
+        FirebaseUser userCurrent = FirebaseAuth.getInstance().getCurrentUser();
+        if (userCurrent != null) {
+          binding.tvUserEmail.setText(userCurrent.getEmail());
+          binding.tvUserName.setText("Hello " + GlobalData.userGlobal.getName());
+
+        } else {
+            Log.d("LOGIN_STATUS", "Không có ai đang đăng nhập");
+        }
+
+    }
+
     private void initTopMoving() {
         DatabaseReference myRef = database.getReference("Items");
-
         binding.progressBarTopMovies.setVisibility(View.VISIBLE);
-
         ArrayList<Film> items = new ArrayList<>();
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -105,12 +119,10 @@ public class ExplorerFragment extends Fragment {
             }
         });
     }
-
     private void initUpComming() {
         DatabaseReference myRef = database.getReference("Upcomming");
 
         binding.progressBarUpcomming.setVisibility(View.VISIBLE);
-
         ArrayList<Film> items = new ArrayList<>();
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
